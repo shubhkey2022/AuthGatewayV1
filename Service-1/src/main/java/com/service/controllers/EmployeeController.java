@@ -38,8 +38,6 @@ public class EmployeeController {
 	public Map<String, Object> getEmployee(final HttpServletRequest httpServletRequest,
 			@PathVariable("id") final Long id) {
 
-		final String token = httpServletRequest.getHeader("Authorization");
-
 		Map<String, Object> returnMap = new HashMap<>();
 
 		if (id == 1) {
@@ -54,12 +52,29 @@ public class EmployeeController {
 		final String url = "http://localhost:8180/api/service-2/employee/address/" + id;
 		final MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
 		headers.add("Content-Type", MediaType.APPLICATION_JSON.toString());
-		headers.add("Authorization", token);
+		headers.add("ApplicationName", "SMBMerchantServices_UAT_9908");
 		final HttpEntity<?> requestEntity = new HttpEntity<>(headers);
 		final ResponseEntity<Map> response = this.restTemplate.exchange(url, HttpMethod.GET, requestEntity, Map.class);
 		final Map<String, Object> address = response.getBody();
 
 		returnMap.put("address", address);
+		return returnMap;
+	}
+
+	@GetMapping("emp/{id}")
+	public Map<String, Object> getEmployeeByAddress(final HttpServletRequest httpServletRequest,
+			@PathVariable("id") final Long id) {
+
+		final Map<String, Object> returnMap = new HashMap<>();
+
+		if (id == 1) {
+			returnMap.putAll(Map.of("id", "1", "firstName", "Abc", "lastName", "Efg", "contactNo", "1234567890"));
+		} else if (id == 2) {
+			returnMap.putAll(Map.of("id", "2", "firstName", "DEF", "lastName", "ABCD", "contactNo", "9876543210"));
+		} else if (id == 3) {
+			returnMap.putAll(Map.of("id", "3", "firstName", "XYz", "lastName", "Test", "contactNo", "4561237890"));
+		}
+
 		return returnMap;
 	}
 }

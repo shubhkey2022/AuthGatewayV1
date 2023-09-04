@@ -43,7 +43,7 @@ public class AuthException extends RuntimeException {
 	private static final Map<String, String> MESSAGES = new HashMap<>();
 
 	static {
-		MESSAGES.put(Codes.EA_001, "Missing Jwt token");
+		MESSAGES.put(Codes.EA_001, "Missing Application Name");
 		MESSAGES.put(Codes.EA_002, "Invalid Jwt token");
 		MESSAGES.put(Codes.EA_003, "Jwt is expired");
 		MESSAGES.put(Codes.EA_004, "Unauthorized access to API");
