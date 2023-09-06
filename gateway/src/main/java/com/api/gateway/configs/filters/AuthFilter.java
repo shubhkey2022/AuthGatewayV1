@@ -32,6 +32,8 @@ public class AuthFilter implements GlobalFilter {
 	@Override
 	public Mono<Void> filter(final ServerWebExchange exchange, final GatewayFilterChain chain) {
 
+		final String route = exchange.getRequest().getURI().getRawPath();
+
 		final String appName = exchange.getRequest().getHeaders().getFirst(this.authHeaderName);
 
 		if (appName == null || appName.isEmpty()) {
@@ -39,6 +41,10 @@ public class AuthFilter implements GlobalFilter {
 			throw new AuthException(AuthException.Codes.EA_001);
 		}
 
+		if (!appName.equals(this.getApplications().get(route.split("/")[1]))) {
+			throw new AuthException(AuthException.Codes.EA_004);
+		}
+		
 		String newToken = "";
 
 		// AppConfig.removeAll();
@@ -75,4 +81,7 @@ public class AuthFilter implements GlobalFilter {
 		return chain.filter(exchange1);
 	}
 
+	private Map<String, String> getApplications() {
+		return Map.of("service-1", "SMBEmployeeServices_UAT_9908", "service-2", "SMBMerchantServices_UAT_9908");
+	}
 }

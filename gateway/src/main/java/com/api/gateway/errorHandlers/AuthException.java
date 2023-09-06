@@ -47,5 +47,6 @@ public class AuthException extends RuntimeException {
 		MESSAGES.put(Codes.EA_002, "Invalid Jwt token");
 		MESSAGES.put(Codes.EA_003, "Jwt is expired");
 		MESSAGES.put(Codes.EA_004, "Unauthorized access to API");
+		MESSAGES.put(Codes.EA_005, "Invalid Application Name");
 	}
 }
