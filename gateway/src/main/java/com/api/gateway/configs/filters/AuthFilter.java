@@ -1,6 +1,7 @@
 package com.api.gateway.configs.filters;
 
 import java.util.Date;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,9 +43,9 @@ public class AuthFilter implements GlobalFilter {
 		}
 
 		if (!appName.equals(this.getApplications().get(route.split("/")[1]))) {
-			throw new AuthException(AuthException.Codes.EA_004);
+			throw new AuthException(AuthException.Codes.EA_005);
 		}
-		
+
 		String newToken = "";
 
 		// AppConfig.removeAll();
@@ -72,7 +73,7 @@ public class AuthFilter implements GlobalFilter {
 			throw new AuthException(AuthException.Codes.EA_004);
 		}
 
-		if (!jwtUtil.validateDisplayName(newToken)) {
+		if (!jwtUtil.validateDisplayName(newToken, appName)) {
 			throw new AuthException(AuthException.Codes.EA_004);
 		}
 

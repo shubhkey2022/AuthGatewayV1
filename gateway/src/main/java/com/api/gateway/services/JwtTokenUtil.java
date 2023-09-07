@@ -73,16 +73,19 @@ public class JwtTokenUtil implements Serializable {
 		return 0L;
 	}
 
-	public boolean validateDisplayName(final String token) {
+	public boolean validateDisplayName(final String token, final String appName) {
 		final Map<String, Object> claims = getClaim(token);
 		if (null != claims) {
 			if (null != claims.get(JwtKeys.APP_DISPLAY_NAME)) {
 				final String displayName = claims.get(JwtKeys.APP_DISPLAY_NAME).toString();
-				for (final String applicationName : Constants.APPLCIATION_DISPLAY_NAMES) {
-					if (applicationName.equalsIgnoreCase(displayName)) {
-						return true;
-					}
+				if (appName.equalsIgnoreCase(displayName)) {
+					return true;
 				}
+//				for (final String applicationName : Constants.APPLCIATION_DISPLAY_NAMES) {
+//					if (applicationName.equalsIgnoreCase(displayName)) {
+//						return true;
+//					}
+//				}
 			}
 			return false;
 		}
@@ -95,13 +98,16 @@ public class JwtTokenUtil implements Serializable {
 		if (null != claims) {
 			if (null != claims.get(JwtKeys.ROLES)) {
 				final List<String> roles = (ArrayList<String>) claims.get(JwtKeys.ROLES);
-				if (roles.stream().anyMatch(x -> x.equalsIgnoreCase(Constants.ROLES))) {
+				if ((roles.stream().anyMatch(x -> x.equalsIgnoreCase(Constants.ROLES)))
+						|| (roles.stream().anyMatch(x -> x.equalsIgnoreCase(Constants.ROLES))
+								&& roles.stream().anyMatch(x -> x.equalsIgnoreCase(Constants.ROLES1)))) {
 					return true;
 				}
 			}
 			return false;
 		}
 		return false;
+
 	}
 
 	@SuppressWarnings("unchecked")
